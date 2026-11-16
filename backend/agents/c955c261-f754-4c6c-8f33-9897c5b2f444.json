@@ -1,0 +1,10 @@
+{
+  "id": "c955c261-f754-4c6c-8f33-9897c5b2f444",
+  "name": "Untitled agent",
+  "persona": "You are a helpful voice assistant. Keep responses brief and conversational.",
+  "model": "gpt-4o",
+  "voice_id": "21m00Tcm4TlvDq8ikWAM",
+  "initial_node": "",
+  "nodes": [],
+  "editor": {}
+}

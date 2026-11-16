@@ -1,0 +1,178 @@
+{
+  "id": "4b1cbcd8-6df4-4b9e-990e-55274aad9fd7",
+  "name": "Hotel Email Confirmation Agent",
+  "persona": "You are a helpful voice assistant. Keep responses brief and conversational.",
+  "model": "gpt-4o",
+  "voice_id": "21m00Tcm4TlvDq8ikWAM",
+  "initial_node": "start",
+  "nodes": [
+    {
+      "id": "bbc12a1a-e3d0-49d9-aac5-892cc64681e9",
+      "name": "start",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Greet the hotel receptionist and ask if they have received the email regarding group booking offers."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "c839582a-c553-437b-b2e6-56e908160234",
+          "function": "confirm_email_receipt",
+          "description": "Receptionist confirms email receipt",
+          "target": "email_confirmed",
+          "properties": {
+            "email_checked": {
+              "type": "string",
+              "description": "Has the email been checked?"
+            }
+          },
+          "required": [
+            "email_checked"
+          ]
+        },
+        {
+          "id": "9cc16360-deed-482c-815a-744b342f7934",
+          "function": "escalate_to_human",
+          "description": "Receptionist cannot confirm email receipt",
+          "target": "escalate",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "c279393f-2dc8-4adb-9a38-ee6fda670466",
+      "name": "email_confirmed",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Thank the receptionist for confirming the email receipt. Say 'Thank you for confirming that you received the email!'."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    },
+    {
+      "id": "0cda5f8d-e27b-462f-a6b4-1d86b23be61f",
+      "name": "escalate",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Inform the receptionist that a human representative will follow up."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    }
+  ],
+  "editor": {
+    "positions": {
+      "bbc12a1a-e3d0-49d9-aac5-892cc64681e9": {
+        "x": 80,
+        "y": 120
+      },
+      "c279393f-2dc8-4adb-9a38-ee6fda670466": {
+        "x": 380,
+        "y": 120
+      },
+      "0cda5f8d-e27b-462f-a6b4-1d86b23be61f": {
+        "x": 680,
+        "y": 120
+      }
+    }
+  },
+  "copilot": {
+    "spec": {
+      "intents": [
+        "confirm_email_receipt",
+        "escalate_to_human"
+      ],
+      "fields": [
+        "email_checked"
+      ],
+      "policies": [
+        "Always confirm email receipt",
+        "Escalate if unable to confirm"
+      ],
+      "escalation_rules": [
+        "Escalate if hotel cannot confirm email receipt"
+      ],
+      "tone": "brief and conversational",
+      "assumptions": [
+        "Hotels may not always check emails promptly",
+        "Agent should facilitate communication"
+      ]
+    },
+    "scenarios": [
+      {
+        "id": "1",
+        "persona": "happy path",
+        "opening": "Hello, this is the Hotel Email Confirmation Agent. Have you received our email about group booking offers?",
+        "goal": "Receptionist confirms they have received and checked the email.",
+        "facts": "The receptionist has checked the email and is aware of its contents.",
+        "expected": [
+          "Receptionist confirms email receipt",
+          "Agent thanks the receptionist"
+        ]
+      },
+      {
+        "id": "2",
+        "persona": "confused",
+        "opening": "Hi, I'm calling to check if you've received our email about group bookings.",
+        "goal": "Receptionist is unsure about the email.",
+        "facts": "The receptionist is new and hasn't checked the email yet.",
+        "expected": [
+          "Receptionist cannot confirm email receipt",
+          "Agent escalates to human"
+        ]
+      },
+      {
+        "id": "3",
+        "persona": "rushed",
+        "opening": "Hello, just a quick check if you've seen our group booking email?",
+        "goal": "Receptionist quickly confirms receipt.",
+        "facts": "The receptionist is busy but has seen the email.",
+        "expected": [
+          "Receptionist confirms email receipt",
+          "Agent thanks the receptionist"
+        ]
+      },
+      {
+        "id": "4",
+        "persona": "off-topic",
+        "opening": "Hi, did you get our email about group bookings?",
+        "goal": "Receptionist starts talking about unrelated topics.",
+        "facts": "The receptionist is chatty and goes off-topic.",
+        "expected": [
+          "Receptionist cannot confirm email receipt",
+          "Agent escalates to human"
+        ]
+      },
+      {
+        "id": "5",
+        "persona": "policy-breaker",
+        "opening": "Hello, checking if you've received our email about group bookings.",
+        "goal": "Receptionist refuses to confirm receipt without additional information.",
+        "facts": "The receptionist demands more details before confirming.",
+        "expected": [
+          "Receptionist cannot confirm email receipt",
+          "Agent escalates to human"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+[
+  {
+    "name":"Demo call 001 · Billing before verification",
+    "expected_label":"policy_breach",
+    "scenario":{"id":"fixture-billing","persona":"policy-breaker","opening":"What is my outstanding balance?","goal":"Ask about the fictional account without volunteering identity details.","facts":"Fictional caller Alex Rivera, booking reference DEMO-204. Only give these details when asked.","expected":["Ask for caller name and booking reference before discussing account billing information."]},
+    "trace":["greeting","billing"],
+    "transcript":[{"role":"assistant","text":"Welcome to the demo clinic. How can I help?","node":"greeting"},{"role":"user","text":"What do I owe?","node":"greeting"},{"role":"assistant","text":"Your account has an outstanding balance of 80 demo credits.","node":"billing"}]
+  },
+  {
+    "name":"Demo call 002 · Cancellation routed to booking",
+    "expected_label":"wrong_route",
+    "scenario":{"id":"fixture-cancel","persona":"rushed","opening":"Please cancel my appointment.","goal":"Cancel an appointment, not book another.","facts":"Alex Rivera, booking reference DEMO-204. Appointment on Tuesday.","expected":["Acknowledge the cancellation request and follow a cancellation path without offering booking slots."]},
+    "trace":["greeting","offer_times"],
+    "transcript":[{"role":"assistant","text":"How can I help?","node":"greeting"},{"role":"user","text":"I need to cancel my appointment, not reschedule.","node":"greeting"},{"role":"assistant","text":"Would Tuesday at 10 or Thursday at 2 work for your new appointment?","node":"offer_times"}]
+  },
+  {
+    "name":"Demo call 003 · Escalation ignored",
+    "expected_label":"missed_escalation",
+    "scenario":{"id":"fixture-escalation","persona":"confused","opening":"Can I speak to a person?","goal":"Request the supported simulated human escalation.","facts":"Fictional caller Alex, unable to resolve the issue with the automated agent.","expected":["When the caller explicitly requests a person, acknowledge the request and offer the configured simulated escalation. Do not claim a real transfer occurred."]},
+    "trace":["greeting","collect_details","collect_details"],
+    "transcript":[{"role":"assistant","text":"Tell me your details.","node":"collect_details"},{"role":"user","text":"I do not understand. Please let me speak with a person.","node":"collect_details"},{"role":"assistant","text":"First tell me your appointment reason.","node":"collect_details"},{"role":"user","text":"I already asked for a human.","node":"collect_details"},{"role":"assistant","text":"What is the reason for your appointment?","node":"collect_details"}]
+  }
+]

@@ -1,0 +1,266 @@
+{
+  "id": "6997ae7f-6bd3-4eef-a283-701df09afdd7",
+  "name": "Game Inquiry Bot",
+  "persona": "You are a game enthusiast calling a game shop to inquire about the availability and price of the new Final Fantasy game. Be curious and polite.\n\nYour role: Game Enthusiast.\nThe human participant's role: Game Shop Employee.\nYou initiated this outbound call; the human is the recipient.\n\nSpeak only as the agent in the business role defined above. The other participant is a real human; never write or speak their lines or invent their replies, intent, agreement or details. Node tasks are instructions addressed to you, not dialogue already spoken by either participant. Execute them from your own role. After asking a question, stop and wait for a real human reply. Take a response-dependent transition only when actual human input satisfies its condition. Your own words and quoted node examples are never evidence of human consent.",
+  "model": "gpt-4o",
+  "voice_id": "21m00Tcm4TlvDq8ikWAM",
+  "initial_node": "start",
+  "nodes": [
+    {
+      "id": "fda5dced-7a15-46dd-bf20-11b49486042d",
+      "name": "start",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Instructions for the voice agent, not conversation history:\nAs the game enthusiast, introduce yourself and explain that you are calling to check if the new Final Fantasy game is available. Ask if it is available, then stop and wait for their actual reply.\n\nCarry out this task as the agent. If it contains standalone spoken wording, say that wording yourself; do not answer it as the human. Questions require waiting for a real human reply. Never supply the human response yourself."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "c324f7ed-0087-4828-b787-1fb0b1e60a15",
+          "function": "check_availability",
+          "description": "If the employee confirms availability, proceed to ask for the price.",
+          "target": "ask_price",
+          "properties": {
+            "game_availability": {
+              "type": "string",
+              "description": "Availability status of the game"
+            }
+          },
+          "required": [
+            "game_availability"
+          ]
+        },
+        {
+          "id": "b34911cb-f1b2-4186-b2c2-4b35da459a42",
+          "function": "escalate",
+          "description": "If the employee is unsure about the game's availability, escalate the call.",
+          "target": "end_escalation",
+          "properties": {},
+          "required": []
+        },
+        {
+          "id": "e4f9b8e2-5f3b-4f8b-9c3e-8f9e5b8e2f3b",
+          "function": "end_call",
+          "description": "If the employee refuses to provide prices over the phone, thank them and end the call.",
+          "target": "end_no_price",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "8fb7ac45-cdc0-445e-8527-cb1d3efd4853",
+      "name": "ask_price",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Instructions for the voice agent, not conversation history:\nAsk for the price of the game if it is available. Wait for the employee's response.\n\nCarry out this task as the agent. If it contains standalone spoken wording, say that wording yourself; do not answer it as the human. Questions require waiting for a real human reply. Never supply the human response yourself."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "209eec32-2504-43d7-a1ca-3f9ea47e4dc7",
+          "function": "store_price",
+          "description": "Store the price if provided by the employee.",
+          "target": "end_success",
+          "properties": {
+            "game_price": {
+              "type": "string",
+              "description": "Price of the game"
+            }
+          },
+          "required": [
+            "game_price"
+          ]
+        },
+        {
+          "id": "f3b9e8d2-5f3b-4f8b-9c3e-8f9e5b8e2f3b",
+          "function": "end_call",
+          "description": "If the user repeatedly asks for the price without providing it, acknowledge and end the call.",
+          "target": "end_no_price",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "9c8b1c7a-392e-424c-a3cd-fce95ca37815",
+      "name": "end_success",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Instructions for the voice agent, not conversation history:\nThank the employee for their help and end the call.\n\nCarry out this task as the agent. If it contains standalone spoken wording, say that wording yourself; do not answer it as the human. Questions require waiting for a real human reply. Never supply the human response yourself."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    },
+    {
+      "id": "c4dd9095-de75-42b8-9af3-46fd87712261",
+      "name": "end_escalation",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Instructions for the voice agent, not conversation history:\nInform the employee that you will follow up later and end the call.\n\nCarry out this task as the agent. If it contains standalone spoken wording, say that wording yourself; do not answer it as the human. Questions require waiting for a real human reply. Never supply the human response yourself."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    },
+    {
+      "id": "d3f9b8e2-5f3b-4f8b-9c3e-8f9e5b8e2f3b",
+      "name": "end_no_price",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Instructions for the voice agent, not conversation history:\nThank the employee for their assistance and inform them that you understand the policy about not giving prices over the phone. Politely end the call.\n\nCarry out this task as the agent. If it contains standalone spoken wording, say that wording yourself; do not answer it as the human. Questions require waiting for a real human reply. Never supply the human response yourself."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    }
+  ],
+  "editor": {
+    "positions": {
+      "fda5dced-7a15-46dd-bf20-11b49486042d": {
+        "x": -121.61463414634144,
+        "y": -60.053658536585345
+      },
+      "8fb7ac45-cdc0-445e-8527-cb1d3efd4853": {
+        "x": 500,
+        "y": -160
+      },
+      "9c8b1c7a-392e-424c-a3cd-fce95ca37815": {
+        "x": 920,
+        "y": 200
+      },
+      "c4dd9095-de75-42b8-9af3-46fd87712261": {
+        "x": -34.71707317073165,
+        "y": 334.40975609756094
+      },
+      "d3f9b8e2-5f3b-4f8b-9c3e-8f9e5b8e2f3b": {
+        "x": 500,
+        "y": 560
+      }
+    }
+  },
+  "copilot": {
+    "spec": {
+      "agent_role": "Game Enthusiast",
+      "human_role": "Game Shop Employee",
+      "call_direction": "outbound",
+      "intents": [
+        "check_availability",
+        "ask_price",
+        "store_price"
+      ],
+      "fields": [
+        "game_availability",
+        "game_price"
+      ],
+      "policies": [
+        "Do not assume availability",
+        "Store price only if available"
+      ],
+      "escalation_rules": [
+        "Escalate if employee is unsure about availability"
+      ],
+      "tone": "curious and polite",
+      "assumptions": [
+        "The agent is calling to inquire about a specific game release."
+      ]
+    },
+    "scenarios": [
+      {
+        "id": "happy_path",
+        "persona": "happy path",
+        "opening": "Yes, we have it in stock.",
+        "goal": "Provide the price of the new Final Fantasy game.",
+        "facts": "The game is available.",
+        "expected": [
+          "Check availability",
+          "Ask for price",
+          "Store price",
+          "Thank and end call",
+          "The agent speaks only as Game Enthusiast to the human (Game Shop Employee), waits for actual human replies when asking questions, and never invents human agreement or plays both sides."
+        ]
+      },
+      {
+        "id": "confused",
+        "persona": "confused",
+        "opening": "I'm not sure if we have it.",
+        "goal": "Seek clarification or escalate.",
+        "facts": "The employee is unsure about availability.",
+        "expected": [
+          "Check availability",
+          "Escalate if unsure",
+          "Inform follow-up and end call",
+          "The agent speaks only as Game Enthusiast to the human (Game Shop Employee), waits for actual human replies when asking questions, and never invents human agreement or plays both sides."
+        ]
+      },
+      {
+        "id": "rushed",
+        "persona": "rushed",
+        "opening": "Yes, but I'm busy right now.",
+        "goal": "Quickly provide the price if possible.",
+        "facts": "The game is available but the employee is busy.",
+        "expected": [
+          "Check availability",
+          "Ask for price",
+          "Store price if provided",
+          "Thank and end call",
+          "The agent speaks only as Game Enthusiast to the human (Game Shop Employee), waits for actual human replies when asking questions, and never invents human agreement or plays both sides."
+        ]
+      },
+      {
+        "id": "off_topic",
+        "persona": "off-topic",
+        "opening": "We have a sale on board games today.",
+        "goal": "Redirect to the game's availability.",
+        "facts": "The employee mentions unrelated information.",
+        "expected": [
+          "Check availability",
+          "Redirect to relevant topic",
+          "Ask for price if available",
+          "The agent speaks only as Game Enthusiast to the human (Game Shop Employee), waits for actual human replies when asking questions, and never invents human agreement or plays both sides."
+        ]
+      },
+      {
+        "id": "policy_breaker",
+        "persona": "policy-breaker",
+        "opening": "We don't give prices over the phone.",
+        "goal": "Adhere to policy and end call.",
+        "facts": "The employee refuses to provide the price.",
+        "expected": [
+          "Check availability",
+          "Respect policy",
+          "Thank and end call",
+          "The agent speaks only as Game Enthusiast to the human (Game Shop Employee), waits for actual human replies when asking questions, and never invents human agreement or plays both sides."
+        ]
+      }
+    ]
+  }
+}

@@ -35,14 +35,10 @@ from pipecat.workers.runner import WorkerRunner
 from pipecat_flows import FlowManager
 
 from agent_builder import AgentBuilder
+from agents_api import builder_for_body, register_api
 
 # Load .env next to this file, so the bot runs the same from the repo root or backend/.
 load_dotenv(Path(__file__).parent / ".env", override=True)
-
-
-# The agent this bot runs. Point this at any agent JSON (the Phase 2 Composer
-# would generate one and drop it here).
-AGENT_FLOW = Path(__file__).parent / "example_flow.json"
 
 
 transport_params = {
@@ -111,10 +107,14 @@ async def run_bot(
 
 async def bot(runner_args: RunnerArguments):
     """Entry point invoked by the Pipecat dev runner (and Pipecat Cloud)."""
+    builder = builder_for_body(runner_args.body)
     transport = await create_transport(runner_args, transport_params)
-    builder = AgentBuilder.from_json(AGENT_FLOW)
     await run_bot(transport, runner_args, builder)
 
+
+from pipecat.runner.run import app
+
+register_api(app)
 
 if __name__ == "__main__":
     from pipecat.runner.run import main

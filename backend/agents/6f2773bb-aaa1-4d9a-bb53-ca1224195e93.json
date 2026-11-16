@@ -1,0 +1,248 @@
+{
+  "id": "6f2773bb-aaa1-4d9a-bb53-ca1224195e93",
+  "name": "Copilot Demo \u00b7 Clinic Billing",
+  "persona": "You are a helpful voice assistant. Keep responses brief and conversational.",
+  "model": "gpt-4o",
+  "voice_id": "21m00Tcm4TlvDq8ikWAM",
+  "initial_node": "greeting",
+  "nodes": [
+    {
+      "id": "8bab68ff-a280-4d07-be6a-6f4412df0a49",
+      "name": "greeting",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Hi! Billing help or team follow-up?"
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "4f40e5c7-40c9-49f9-923d-add7b2dedb37",
+          "function": "determine_request_type",
+          "description": "Determine if the caller wants billing information or to speak to a person.",
+          "target": "billing_or_person",
+          "properties": {
+            "request_type": {
+              "type": "string",
+              "description": "The type of request the caller has made."
+            }
+          },
+          "required": [
+            "request_type"
+          ]
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "6170d7a8-0589-4a88-b43c-4ab15ef5ffb9",
+      "name": "billing_or_person",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Process the caller's request for billing information or speaking to a person."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "2d583828-c679-4d7d-a6aa-82bb5da10c71",
+          "function": "check_balance",
+          "description": "Provide the caller with their demo balance of 80 demo credits.",
+          "target": "verification",
+          "properties": {},
+          "required": []
+        },
+        {
+          "id": "feec0f6e-2f79-48b7-9fe4-be50c7765c69",
+          "function": "speak_to_person",
+          "description": "Inform the caller that a team member will follow up with them.",
+          "target": "speak_to_person",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "2e32ea80-c9f1-4514-a55f-a91c8a311cd5",
+      "name": "billing_info",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Provide the caller with their demo balance of 80 demo credits."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    },
+    {
+      "id": "verification",
+      "name": "verification",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Ask the caller for their full name and booking reference to verify their identity before providing billing information."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "b1f2c3d4-e5f6-7890-abcd-1234567890ef",
+          "function": "verify_identity",
+          "description": "Verify the caller's identity using their full name and booking reference.",
+          "target": "billing_info",
+          "properties": {
+            "full_name": {
+              "type": "string",
+              "description": "The full name of the caller."
+            },
+            "booking_reference": {
+              "type": "string",
+              "description": "The booking reference of the caller."
+            }
+          },
+          "required": [
+            "full_name",
+            "booking_reference"
+          ]
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "dc92005e-2601-4a62-a3a6-ef7424e9fb44",
+      "name": "speak_to_person",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Inform the caller that a team member will follow up with them."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    }
+  ],
+  "editor": {
+    "positions": {
+      "8bab68ff-a280-4d07-be6a-6f4412df0a49": {
+        "x": 80,
+        "y": 120
+      },
+      "2e32ea80-c9f1-4514-a55f-a91c8a311cd5": {
+        "x": 380,
+        "y": 120
+      },
+      "dc92005e-2601-4a62-a3a6-ef7424e9fb44": {
+        "x": 680,
+        "y": 120
+      },
+      "b1f2c3d4-e5f6-7890-abcd-1234567890ef": {
+        "x": 980,
+        "y": 120
+      },
+      "6170d7a8-0589-4a88-b43c-4ab15ef5ffb9": {
+        "x": 380,
+        "y": 120
+      },
+      "verification": {
+        "x": 980,
+        "y": 120
+      }
+    }
+  },
+  "copilot": {
+    "spec": {
+      "intents": [
+        "check_balance",
+        "speak_to_person"
+      ],
+      "fields": [
+        "request_type"
+      ],
+      "policies": [
+        "no_identity_verification",
+        "no_real_transfers"
+      ],
+      "escalation_rules": [
+        "offer_team_follow_up"
+      ],
+      "tone": "brief and conversational",
+      "assumptions": [
+        "Demo balance is fictional",
+        "No real transfers are made",
+        "No identity verification is required"
+      ]
+    },
+    "scenarios": [
+      {
+        "id": "scenario_1",
+        "persona": "happy path",
+        "opening": "I'd like to know my billing balance.",
+        "goal": "Receive the demo balance information.",
+        "facts": "Caller is curious about their billing balance.",
+        "expected": [
+          "Agent provides demo balance of 80 demo credits."
+        ]
+      },
+      {
+        "id": "scenario_2",
+        "persona": "confused",
+        "opening": "Can you tell me about my account?",
+        "goal": "Clarify the request and provide demo balance.",
+        "facts": "Caller is unsure about what information they need.",
+        "expected": [
+          "Agent clarifies and provides demo balance of 80 demo credits."
+        ]
+      },
+      {
+        "id": "scenario_3",
+        "persona": "rushed",
+        "opening": "I need to speak to someone quickly!",
+        "goal": "Request to speak to a person and receive follow-up assurance.",
+        "facts": "Caller is in a hurry and wants human assistance.",
+        "expected": [
+          "Agent informs caller of team follow-up."
+        ]
+      },
+      {
+        "id": "scenario_4",
+        "persona": "off-topic",
+        "opening": "What's the weather like today?",
+        "goal": "Redirect to relevant billing or person request.",
+        "facts": "Caller asks an unrelated question.",
+        "expected": [
+          "Agent redirects to billing or person request."
+        ]
+      },
+      {
+        "id": "scenario_5",
+        "persona": "policy-breaker",
+        "opening": "Can you transfer me to a manager?",
+        "goal": "Request to speak to a person and receive follow-up assurance.",
+        "facts": "Caller insists on speaking to a manager.",
+        "expected": [
+          "Agent informs caller of team follow-up, no real transfer."
+        ]
+      }
+    ]
+  }
+}

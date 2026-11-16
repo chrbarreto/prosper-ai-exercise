@@ -1,0 +1,278 @@
+{
+  "id": "af74d192-a985-4160-ad88-43b75abc8c6e",
+  "name": "Interview Scheduler",
+  "persona": "You are a helpful voice assistant. Keep responses brief and conversational.",
+  "model": "gpt-4o",
+  "voice_id": "21m00Tcm4TlvDq8ikWAM",
+  "initial_node": "start",
+  "nodes": [
+    {
+      "id": "20f2a3a1-4097-4a10-bc03-4b5ea6418f86",
+      "name": "start",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Greet the candidate and ask if they are willing to interview for the software engineer position."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "8ed47a2f-c26f-4c65-a0a7-69188fd7eb3a",
+          "function": "confirm_interview",
+          "description": "Candidate agrees to interview",
+          "target": "collect_email",
+          "properties": {},
+          "required": []
+        },
+        {
+          "id": "8ea64e74-e42c-47e7-bf1e-0a25b8b020de",
+          "function": "decline_interview",
+          "description": "Candidate declines the interview",
+          "target": "end_decline",
+          "properties": {},
+          "required": []
+        },
+        {
+          "id": "7ea64e74-e42c-47e7-bf1e-0a25b8b020df",
+          "function": "provide_email_without_confirmation",
+          "description": "Candidate tries to provide email without confirming interview",
+          "target": "prompt_confirm_interview",
+          "properties": {},
+          "required": []
+        },
+        {
+          "id": "2ed47a2f-c26f-4c65-a0a7-69188fd7eb3d",
+          "function": "off_topic_discussion",
+          "description": "Candidate goes off-topic",
+          "target": "redirect_off_topic",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "49e6bbca-0ab1-4f0c-85aa-e760c6a87ded",
+      "name": "collect_email",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Ask for the candidate's email address to send the interview exercise link."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "ff37ccdd-bc6d-469f-a993-4fd9f8fb4f8c",
+          "function": "collect_email_address",
+          "description": "Collect the candidate's email address",
+          "target": "end_confirm",
+          "properties": {
+            "email_address": {
+              "type": "string",
+              "description": "The candidate's email address"
+            }
+          },
+          "required": [
+            "email_address"
+          ]
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "38e846a3-208a-471c-b219-9f20ad4d5009",
+      "name": "end_confirm",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Thank the candidate and inform them they will be contacted soon with the interview exercise link."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    },
+    {
+      "id": "b115ef99-c835-42d7-9dfe-66ebd4a1af7f",
+      "name": "end_decline",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Acknowledge the candidate's decision and end the call politely."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    },
+    {
+      "id": "d3f2a3b1-5a9b-4c0a-bc03-4b5ea6418f87",
+      "name": "prompt_confirm_interview",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Please confirm your interest in the interview before providing your email address."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "9ed47a2f-c26f-4c65-a0a7-69188fd7eb3b",
+          "function": "confirm_interview",
+          "description": "Candidate agrees to interview",
+          "target": "collect_email",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "f3a2b3c1-6b9b-4d0a-bc03-4b5ea6418f88",
+      "name": "redirect_off_topic",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Politely redirect the conversation back to the interview topic or end the call if unproductive."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "1ed47a2f-c26f-4c65-a0a7-69188fd7eb3c",
+          "function": "redirect_to_interview",
+          "description": "Redirect back to interview topic",
+          "target": "start",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    }
+  ],
+  "editor": {
+    "positions": {
+      "20f2a3a1-4097-4a10-bc03-4b5ea6418f86": {
+        "x": -122.95107033639144,
+        "y": -114.20489296636083
+      },
+      "49e6bbca-0ab1-4f0c-85aa-e760c6a87ded": {
+        "x": 344.0366972477064,
+        "y": 371.74311926605503
+      },
+      "38e846a3-208a-471c-b219-9f20ad4d5009": {
+        "x": 786.1773700305812,
+        "y": -251.62079510703362
+      },
+      "b115ef99-c835-42d7-9dfe-66ebd4a1af7f": {
+        "x": 356.63608562691127,
+        "y": -277.308868501529
+      },
+      "d3f2a3b1-5a9b-4c0a-bc03-4b5ea6418f87": {
+        "x": 80,
+        "y": 360
+      },
+      "f3a2b3c1-6b9b-4d0a-bc03-4b5ea6418f88": {
+        "x": 380,
+        "y": 360
+      }
+    }
+  },
+  "copilot": {
+    "spec": {
+      "intents": [
+        "confirm_interview",
+        "decline_interview"
+      ],
+      "fields": [
+        "email_address"
+      ],
+      "policies": [
+        "Collect email only if candidate agrees to interview"
+      ],
+      "escalation_rules": [
+        "Escalate to human if candidate asks complex questions"
+      ],
+      "tone": "brief and conversational",
+      "assumptions": [
+        "Candidates have been pre-selected for the interview",
+        "Candidates are expecting a call about the interview"
+      ]
+    },
+    "scenarios": [
+      {
+        "id": "1",
+        "persona": "happy path",
+        "opening": "Hello, this is the Interview Scheduler. Are you available for an interview for the software engineer position?",
+        "goal": "Agree to the interview and provide an email address.",
+        "facts": "The candidate is eager to interview and has their email ready.",
+        "expected": [
+          "Collect email only if candidate agrees to interview",
+          "Candidate agrees and provides email"
+        ]
+      },
+      {
+        "id": "2",
+        "persona": "confused",
+        "opening": "Hello, this is the Interview Scheduler. Are you available for an interview for the software engineer position?",
+        "goal": "Ask for more details about the interview process.",
+        "facts": "The candidate is unsure about the interview details.",
+        "expected": [
+          "Escalate to human if candidate asks complex questions"
+        ]
+      },
+      {
+        "id": "3",
+        "persona": "rushed",
+        "opening": "Hello, this is the Interview Scheduler. Are you available for an interview for the software engineer position?",
+        "goal": "Agree to the interview but rush through the call.",
+        "facts": "The candidate is in a hurry but willing to provide their email quickly.",
+        "expected": [
+          "Collect email only if candidate agrees to interview",
+          "Candidate agrees and provides email"
+        ]
+      },
+      {
+        "id": "4",
+        "persona": "off-topic",
+        "opening": "Hello, this is the Interview Scheduler. Are you available for an interview for the software engineer position?",
+        "goal": "Discuss unrelated topics.",
+        "facts": "The candidate starts talking about unrelated personal experiences.",
+        "expected": [
+          "Politely redirect to interview topic or end call if unproductive"
+        ]
+      },
+      {
+        "id": "5",
+        "persona": "policy-breaker",
+        "opening": "Hello, this is the Interview Scheduler. Are you available for an interview for the software engineer position?",
+        "goal": "Try to provide an email without agreeing to the interview.",
+        "facts": "The candidate wants to give their email but hasn't agreed to the interview.",
+        "expected": [
+          "Collect email only if candidate agrees to interview",
+          "Do not collect email if interview not confirmed"
+        ]
+      }
+    ]
+  }
+}

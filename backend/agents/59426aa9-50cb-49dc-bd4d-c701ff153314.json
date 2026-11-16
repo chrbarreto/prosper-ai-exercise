@@ -1,0 +1,298 @@
+{
+  "id": "59426aa9-50cb-49dc-bd4d-c701ff153314",
+  "name": "Veterinarian Appointment Assistant",
+  "persona": "You are a helpful voice assistant. Keep responses brief and conversational.",
+  "model": "gpt-4o",
+  "voice_id": "21m00Tcm4TlvDq8ikWAM",
+  "initial_node": "start",
+  "nodes": [
+    {
+      "id": "ca9c8642-1b50-4a5b-9dc3-4f48b54909ef",
+      "name": "start",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Hello, I'm calling from the veterinarian clinic to confirm your appointment. Would you like to confirm, cancel, or reschedule?"
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "2af76e16-f31b-4792-9aae-42b4d7782b39",
+          "function": "confirm_appointment",
+          "description": "Caller confirms the appointment.",
+          "target": "end_confirm",
+          "properties": {},
+          "required": []
+        },
+        {
+          "id": "2a2df187-f8b9-4652-aead-f19aa2dfe7e4",
+          "function": "cancel_appointment",
+          "description": "Caller wants to cancel the appointment.",
+          "target": "end_cancel",
+          "properties": {},
+          "required": []
+        },
+        {
+          "id": "b10fe811-99b6-40b0-bc44-3baedf123452",
+          "function": "reschedule_appointment",
+          "description": "Caller wants to reschedule the appointment.",
+          "target": "offer_same_slot",
+          "properties": {},
+          "required": []
+        },
+        {
+          "id": "188b5c0d-6bf0-408c-aed6-53ac97e0b640",
+          "function": "new_slot_request",
+          "description": "Caller requests a new slot.",
+          "target": "collect_phone_number",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "3cd5b963-4b65-46fb-8554-69dd99930cf4",
+      "name": "offer_same_slot",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "We can offer you the same slot next week. Does that work for you?"
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "bf6b6267-9d84-42d3-a2b2-30f4698c2cf4",
+          "function": "confirm_reschedule",
+          "description": "Caller confirms the rescheduled appointment.",
+          "target": "end_reschedule",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "cbd68e12-9256-4ba2-a912-d057e1c7bd13",
+      "name": "collect_phone_number",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Please provide your phone number to confirm a new slot for next week. We cannot proceed without it."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "59002fd5-1cb7-4624-a6bd-45e2dc20dfe8",
+          "function": "confirm_new_slot",
+          "description": "Caller provides phone number for new slot. If not provided, repeat request.",
+          "target": "end_new_slot",
+          "properties": {
+            "phone_number": {
+              "type": "string",
+              "description": "The phone number of the caller."
+            }
+          },
+          "required": [
+            "phone_number"
+          ]
+        },
+        {
+          "id": "d3f9c5e2-8f4b-4b8e-9f3b-2f9e5c8e9f3b",
+          "function": "repeat_request",
+          "description": "Repeat phone number request if not provided.",
+          "target": "collect_phone_number",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false,
+      "tools": []
+    },
+    {
+      "id": "896a16bb-b393-4f07-8689-67f7f7d2063f",
+      "name": "end_confirm",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Thank you for confirming your appointment. See you then!"
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    },
+    {
+      "id": "8e6d4779-2b15-49c4-9c70-ca64f45dc2d9",
+      "name": "end_cancel",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Your appointment has been canceled. Have a great day!"
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    },
+    {
+      "id": "4dc2ea03-6df2-48cf-bfde-f688d2ab0bba",
+      "name": "end_reschedule",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Your appointment has been rescheduled for the same time next week. Thank you!"
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    },
+    {
+      "id": "e6f3e5e2-be2f-4688-ae1e-edf872be3a79",
+      "name": "end_new_slot",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Your new appointment slot is confirmed for next week. Thank you!"
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true,
+      "tools": []
+    }
+  ],
+  "editor": {
+    "positions": {
+      "ca9c8642-1b50-4a5b-9dc3-4f48b54909ef": {
+        "x": 80,
+        "y": 200
+      },
+      "3cd5b963-4b65-46fb-8554-69dd99930cf4": {
+        "x": 502,
+        "y": -340
+      },
+      "cbd68e12-9256-4ba2-a912-d057e1c7bd13": {
+        "x": 502,
+        "y": 20
+      },
+      "896a16bb-b393-4f07-8689-67f7f7d2063f": {
+        "x": 502,
+        "y": 380
+      },
+      "8e6d4779-2b15-49c4-9c70-ca64f45dc2d9": {
+        "x": 502,
+        "y": 740
+      },
+      "4dc2ea03-6df2-48cf-bfde-f688d2ab0bba": {
+        "x": 924,
+        "y": 20
+      },
+      "e6f3e5e2-be2f-4688-ae1e-edf872be3a79": {
+        "x": 924,
+        "y": 380
+      }
+    }
+  },
+  "copilot": {
+    "spec": {
+      "intents": [
+        "confirm_appointment",
+        "cancel_appointment",
+        "reschedule_appointment",
+        "new_slot_request"
+      ],
+      "fields": [
+        "phone_number"
+      ],
+      "policies": [
+        "Confirm cancellations",
+        "Offer same slot next week for rescheduling",
+        "Collect phone number for new slot requests"
+      ],
+      "escalation_rules": [
+        "Escalate to human if caller is confused or off-topic"
+      ],
+      "tone": "brief and conversational",
+      "assumptions": [
+        "The clinic can offer the same slot next week",
+        "Phone number is required for new slot requests"
+      ]
+    },
+    "scenarios": [
+      {
+        "id": "1",
+        "persona": "happy path",
+        "opening": "I'd like to confirm my appointment.",
+        "goal": "Confirm the appointment.",
+        "facts": "Caller is satisfied with the current appointment.",
+        "expected": [
+          "Confirm the appointment successfully."
+        ]
+      },
+      {
+        "id": "2",
+        "persona": "confused",
+        "opening": "I'm not sure what to do with my appointment.",
+        "goal": "Get assistance with appointment options.",
+        "facts": "Caller is unsure about their options.",
+        "expected": [
+          "Escalate to human if caller is confused."
+        ]
+      },
+      {
+        "id": "3",
+        "persona": "rushed",
+        "opening": "I need to cancel my appointment quickly.",
+        "goal": "Cancel the appointment promptly.",
+        "facts": "Caller is in a hurry and wants to cancel.",
+        "expected": [
+          "Confirm cancellations promptly."
+        ]
+      },
+      {
+        "id": "4",
+        "persona": "off-topic",
+        "opening": "Can you tell me about your services?",
+        "goal": "Get information about services.",
+        "facts": "Caller is asking about services unrelated to appointments.",
+        "expected": [
+          "Escalate to human if caller is off-topic."
+        ]
+      },
+      {
+        "id": "5",
+        "persona": "policy-breaker",
+        "opening": "I want a new slot but don't want to give my phone number.",
+        "goal": "Get a new appointment slot without providing a phone number.",
+        "facts": "Caller refuses to provide a phone number.",
+        "expected": [
+          "Require phone number for new slot requests."
+        ]
+      }
+    ]
+  }
+}

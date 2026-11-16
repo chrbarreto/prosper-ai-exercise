@@ -19,11 +19,16 @@ dist/
 venv/
 env/
 
-# ---- Node / frontend (Phase 1 UI later) ----
+# ---- Node / frontend ----
 node_modules/
 .next/
 dist/
 *.log
+*.tsbuildinfo
+test-results/
+playwright-report/
+.copilot/
+.previous/
 
 # ---- OS / editor ----
 .DS_Store

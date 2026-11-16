@@ -1,0 +1,128 @@
+{
+  "id": "832f3c70-cbd8-4e32-a8cc-b918ab43834c",
+  "name": "Cedar Bike Workshop",
+  "persona": "You are the friendly voice concierge for Cedar Bike Workshop. Keep spoken answers brief. This is a demo: never claim to have booked a real repair. Use the available transition tools to move the conversation forward.",
+  "model": "gpt-4o",
+  "voice_id": "21m00Tcm4TlvDq8ikWAM",
+  "initial_node": "welcome",
+  "nodes": [
+    {
+      "id": "12b30a12-9a18-572e-a5d0-569e0e62fe18",
+      "name": "welcome",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Welcome the caller to Cedar Bike Workshop. Ask whether they want advice about a repair or information about opening hours."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "9d52baa8-7234-55aa-9f89-1286cf3d279c",
+          "function": "repair_advice",
+          "description": "When the caller wants help with their bike or a repair.",
+          "target": "repair_details",
+          "properties": {},
+          "required": []
+        },
+        {
+          "id": "ace7be5a-f381-5fd6-83b2-d257995c55d9",
+          "function": "opening_hours",
+          "description": "When the caller asks about opening hours or the shop location.",
+          "target": "shop_information",
+          "properties": {},
+          "required": []
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false
+    },
+    {
+      "id": "c7d56cf4-ad79-50c3-9069-e441f13c60d8",
+      "name": "repair_details",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Ask for their bike type and what seems to be wrong. Collect one missing detail at a time. Do not offer a diagnosis or claim to make a booking."
+        }
+      ],
+      "role_message": null,
+      "edges": [
+        {
+          "id": "e396ebe7-a81c-5c8d-96c5-65a742c5ca4c",
+          "function": "record_repair",
+          "description": "When the bike type and repair concern are both known.",
+          "target": "repair_summary",
+          "properties": {
+            "bike_type": {
+              "type": "string",
+              "description": "The type of bicycle."
+            },
+            "concern": {
+              "type": "string",
+              "description": "What the caller needs help with."
+            }
+          },
+          "required": [
+            "bike_type",
+            "concern"
+          ]
+        }
+      ],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": false
+    },
+    {
+      "id": "5f3459e9-06af-5b20-ab96-8b2dbbef002e",
+      "name": "shop_information",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Explain that this demo workshop is open Monday to Friday, 9 AM to 6 PM, at 12 Cedar Lane. Thank the caller and say goodbye."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true
+    },
+    {
+      "id": "b0a206de-d06f-591a-a957-277cfdb74c7d",
+      "name": "repair_summary",
+      "task_messages": [
+        {
+          "role": "developer",
+          "content": "Briefly repeat their bike type and concern. Explain that this is a demo and no repair has been booked. Invite them to visit the workshop for an assessment, then thank them and say goodbye."
+        }
+      ],
+      "role_message": null,
+      "edges": [],
+      "pre_actions": [],
+      "post_actions": [],
+      "end": true
+    }
+  ],
+  "editor": {
+    "positions": {
+      "12b30a12-9a18-572e-a5d0-569e0e62fe18": {
+        "x": 80,
+        "y": 220
+      },
+      "c7d56cf4-ad79-50c3-9069-e441f13c60d8": {
+        "x": 400,
+        "y": 80
+      },
+      "5f3459e9-06af-5b20-ab96-8b2dbbef002e": {
+        "x": 403.6146403048888,
+        "y": 450.36600762221605
+      },
+      "b0a206de-d06f-591a-a957-277cfdb74c7d": {
+        "x": 720,
+        "y": 80
+      }
+    }
+  }
+}
